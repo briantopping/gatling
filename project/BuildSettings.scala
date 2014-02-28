@@ -8,6 +8,7 @@ import net.virtualvoid.sbt.graph.Plugin.graphSettings
 import sbtunidoc.Plugin.{ ScalaUnidoc, unidocSettings }
 
 import Resolvers._
+import com.typesafe.sbt.osgi.SbtOsgi.osgiSettings
 
 object BuildSettings {
 
@@ -41,7 +42,7 @@ object BuildSettings {
 	) ++ Publish.settings ++ Release.settings
 
 	lazy val gatlingModuleSettings =
-		basicSettings ++ formattingSettings ++ graphSettings ++ Seq(
+		basicSettings ++ osgiSettings ++ formattingSettings ++ graphSettings ++ Seq(
 			exportJars := true
 		)
 

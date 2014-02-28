@@ -1,3 +1,4 @@
+import com.typesafe.sbt.osgi.OsgiKeys
 import sbt._
 import sbt.Keys._
 
@@ -29,6 +30,7 @@ object GatlingBuild extends Build {
 
 	lazy val core = gatlingModule("gatling-core")
 		.settings(libraryDependencies ++= coreDeps)
+    .settings(OsgiKeys.exportPackage := Seq("io.gatling.core.*"))
 
 	lazy val jdbc = gatlingModule("gatling-jdbc")
 		.dependsOn(core)
@@ -40,12 +42,14 @@ object GatlingBuild extends Build {
 	lazy val http = gatlingModule("gatling-http")
 		.dependsOn(core)
 		.settings(libraryDependencies ++= httpDeps)
+    .settings(OsgiKeys.exportPackage := Seq("io.gatling.http*"))
 
 	lazy val charts = gatlingModule("gatling-charts")
 		.dependsOn(core)
 		.settings(libraryDependencies ++= chartsDeps)
 		.settings(excludeDummyComponentLibrary: _*)
 		.settings(chartTestsSettings: _*)
+    .settings(OsgiKeys.exportPackage := Seq("io.gatling.charts.component.impl", "io.gatling.charts.report"))
 
 	lazy val metrics = gatlingModule("gatling-metrics")
 		.dependsOn(core)
@@ -54,6 +58,7 @@ object GatlingBuild extends Build {
 	lazy val app = gatlingModule("gatling-app")
 		.dependsOn(core, http, jdbc, redis, metrics, charts)
 		.settings(libraryDependencies ++= appDeps)
+    .settings(OsgiKeys.exportPackage := Seq("io.gatling.app"))
 
 	lazy val recorder = gatlingModule("gatling-recorder")
 		.dependsOn(core, http)
